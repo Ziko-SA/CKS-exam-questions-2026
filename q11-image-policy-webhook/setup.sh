@@ -1,33 +1,23 @@
 #!/bin/bash
+
 # ============================================================================
-# CKS EXAM PRACTICE — Q11: ImagePolicyWebhook
+# CKS EXAM REAL QUESTION — Q11: ImagePolicyWebhook Admission Controller
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q11: IMAGEPOLICYWEBHOOK"
+echo "  CKS REAL Q11: IMAGEPOLICYWEBHOOK ADMISSION CONTROLLER"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
-echo "  You need to enable the ImagePolicyWebhook admission controller"
-echo "  to validate container images before pods are created."
+echo "  The ImagePolicyWebhook admission controller is not currently enabled."
 echo ""
 echo "TASK:"
-echo "  1. An admission webhook server is running (simulated)."
-echo "     The configuration files are partially set up."
-echo ""
-echo "  2. Complete the ImagePolicyWebhook configuration:"
-echo "     a. Create/fix the admission config at"
-echo "        /etc/kubernetes/admission/admission-config.yaml"
-echo "     b. Create/fix the webhook kubeconfig at"
-echo "        /etc/kubernetes/admission/webhook-kubeconfig.yaml"
-echo "     c. Set defaultAllow to false (deny images not approved)"
-echo ""
-echo "  3. Enable ImagePolicyWebhook in the kube-apiserver:"
-echo "     a. Add ImagePolicyWebhook to --enable-admission-plugins"
-echo "     b. Set --admission-control-config-file"
-echo "     c. Mount the admission config directory"
+echo "  - Complete the configuration for the ImagePolicyWebhook admission controller to validate container images before pods are created."
+echo "  - Ensure the admission config and webhook kubeconfig are present and correct."
+echo "  - Set defaultAllow to false to deny images not explicitly approved."
+echo "  - Enable ImagePolicyWebhook in the kube-apiserver and mount the admission config directory."
 echo ""
 echo "=================================================================="
 echo "  Setting up environment..."

@@ -1,37 +1,23 @@
 #!/bin/bash
+
 # ============================================================================
-# CKS EXAM PRACTICE — Q09: Kube-bench — Fix CIS Issues
+# CKS EXAM REAL QUESTION — Q09: kube-bench & CIS Remediation
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q09: KUBE-BENCH — FIX 3 CIS ISSUES"
+echo "  CKS REAL Q09: KUBE-BENCH & CIS REMEDIATION"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
-echo "  Run kube-bench to check CIS Kubernetes benchmarks on the"
-echo "  control plane node. Fix the 3 issues identified below."
+echo "  kube-bench has been run on the control plane node."
+echo "  Several CIS Kubernetes benchmark failures were found."
 echo ""
 echo "TASK:"
-echo "  Fix the following 3 CIS benchmark failures:"
-echo ""
-echo "  Issue 1: Ensure that the --profiling argument is set to false"
-echo "     on the kube-apiserver"
-echo "     File: /etc/kubernetes/manifests/kube-apiserver.yaml"
-echo ""
-echo "  Issue 2: Ensure that the --profiling argument is set to false"
-echo "     on the kube-scheduler"
-echo "     File: /etc/kubernetes/manifests/kube-scheduler.yaml"
-echo ""
-echo "  Issue 3: Ensure that the --profiling argument is set to false"
-echo "     on the kube-controller-manager"
-echo "     File: /etc/kubernetes/manifests/kube-controller-manager.yaml"
-echo ""
-echo "IMPORTANT:"
-echo "  - After each change, the static pod will restart automatically"
-echo "  - Wait for the component to come back before making the next change"
-echo "  - Verify the fix with kube-bench after all changes"
+echo "  - Remediate the CIS benchmark failures as reported by kube-bench."
+echo "  - Make the necessary changes to the static pod manifests for kube-apiserver, kube-scheduler, and kube-controller-manager."
+echo "  - Verify the fixes with kube-bench after remediation."
 echo ""
 echo "=================================================================="
 echo "  Setting up environment..."

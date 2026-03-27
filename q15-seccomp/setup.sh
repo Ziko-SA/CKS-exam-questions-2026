@@ -1,34 +1,21 @@
 #!/bin/bash
+
 # ============================================================================
-# CKS EXAM PRACTICE — Q15: Seccomp Profile
+# CKS EXAM REAL QUESTION — Q15: Seccomp Profile Application
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q15: SECCOMP PROFILE"
+echo "  CKS REAL Q15: SECCOMP PROFILE APPLICATION"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
-echo "  You need to apply a Seccomp profile to restrict system calls"
-echo "  made by a pod."
+echo "  A custom Seccomp profile is available at /var/lib/kubelet/seccomp/profiles/audit.json (logs all syscalls for auditing)."
 echo ""
 echo "TASK:"
-echo "  1. A custom Seccomp profile is provided at:"
-echo "     /var/lib/kubelet/seccomp/profiles/audit.json"
-echo "     (This profile logs all syscalls — used for auditing)"
-echo ""
-echo "  2. Create a pod named 'seccomp-pod' in namespace 'secure-ns' with:"
-echo "     - Image: busybox:1.36"
-echo "     - Command: sh -c 'echo Seccomp applied! && sleep 3600'"
-echo "     - Apply the Seccomp profile using:"
-echo "       securityContext.seccompProfile.type: Localhost"
-echo "       securityContext.seccompProfile.localhostProfile:"
-echo "         profiles/audit.json"
-echo ""
-echo "  3. Also create a pod named 'default-seccomp-pod' in 'secure-ns' with:"
-echo "     - Image: busybox:1.36"
-echo "     - Apply the RuntimeDefault Seccomp profile"
+echo "  - Create a pod named 'seccomp-pod' in namespace 'secure-ns' using busybox:1.36, running 'sh -c \"echo Seccomp applied! && sleep 3600\"', and apply the custom Seccomp profile using securityContext.seccompProfile.type: Localhost and securityContext.seccompProfile.localhostProfile: profiles/audit.json."
+echo "  - Create a pod named 'default-seccomp-pod' in 'secure-ns' using busybox:1.36 and apply the RuntimeDefault Seccomp profile."
 echo ""
 echo "=================================================================="
 echo "  Setting up environment..."

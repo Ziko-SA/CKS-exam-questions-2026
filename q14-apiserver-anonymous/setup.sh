@@ -1,30 +1,23 @@
 #!/bin/bash
+
 # ============================================================================
-# CKS EXAM PRACTICE — Q14: Kube-apiserver Anonymous Auth
+# CKS EXAM REAL QUESTION — Q14: Kube-apiserver Anonymous Authentication
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q14: KUBE-APISERVER — ANONYMOUS AUTH"
+echo "  CKS REAL Q14: KUBE-APISERVER ANONYMOUS AUTHENTICATION"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
-echo "  The kube-apiserver currently allows anonymous authentication."
-echo "  Additionally, there's a ClusterRoleBinding 'system:anonymous'"
-echo "  that grants permissions to anonymous users."
+echo "  The kube-apiserver is currently configured to allow anonymous authentication."
+echo "  There is also a ClusterRoleBinding named 'system:anonymous' granting permissions to anonymous users."
 echo ""
 echo "TASK:"
-echo "  1. Edit the kube-apiserver to set --anonymous-auth=false"
-echo "     File: /etc/kubernetes/manifests/kube-apiserver.yaml"
-echo ""
-echo "  2. Delete the ClusterRoleBinding named 'system:anonymous'"
-echo ""
-echo "  3. Verify the apiserver restarts successfully"
-echo ""
-echo "IMPORTANT:"
-echo "  - Be careful editing apiserver manifests"
-echo "  - Wait for the apiserver to restart"
+echo "  - Edit the kube-apiserver manifest to set --anonymous-auth=false."
+echo "  - Delete the ClusterRoleBinding named 'system:anonymous'."
+echo "  - Verify the apiserver restarts successfully."
 echo ""
 echo "=================================================================="
 echo "  Setting up environment..."

@@ -47,13 +47,6 @@ Wants=network-online.target containerd.service
 Type=notify
 ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 --containerd=/run/containerd/containerd.sock
 ExecReload=/bin/kill -s HUP $MAINPID
-TimeoutStartSec=0
-RestartSec=2
-Restart=always
-LimitNOFILE=infinity
-LimitNPROC=infinity
-LimitCORE=infinity
-TasksMax=infinity
 
 [Install]
 WantedBy=multi-user.target
@@ -77,5 +70,13 @@ echo "  /tmp/cks-q04/docker.service (simulates /lib/systemd/system/docker.servic
 echo ""
 
 echo "✅ Environment ready!"
+
+#!/bin/bash
+# ============================================================================
+# CKS REAL EXAM QUESTION 4: Secure Docker Daemon
+# ============================================================================
+
+set -e
+
 echo ""
 echo "Run 'bash solution.sh' when ready to see the answer."

@@ -24,13 +24,6 @@ echo "     Change ONE line only — DO NOT add or remove any lines."
 echo "     Fix: Change 'readOnlyRootFilesystem: false' to"
 echo "          'readOnlyRootFilesystem: true'"
 echo ""
-echo "IMPORTANT:"
-echo "  - Only change the specified lines"
-echo "  - Do NOT add or remove any lines"
-echo "  - Do NOT build the Docker image"
-echo ""
-echo "=================================================================="
-echo "  Setting up environment..."
 echo "=================================================================="
 
 # Create Dockerfile with security issues
@@ -57,6 +50,14 @@ RUN apt-get update -y && \
 COPY --chown=couchdb:couchdb ./opt/couchdb /opt/couchdb
 
 RUN find /opt/couchdb \! \( -user couchdb -group couchdb \) -exec chown -f couchdb:couchdb '{}' +
+
+
+#!/bin/bash
+# ============================================================================
+# CKS REAL EXAM QUESTION 3: Dockerfile Security Best Practices
+# ============================================================================
+
+set -e
 
 VOLUME /opt/couchdb/data
 

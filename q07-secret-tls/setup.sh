@@ -9,13 +9,6 @@ echo "=================================================================="
 echo "  CKS PRACTICE Q07: SECRET TLS"
 echo "=================================================================="
 echo ""
-echo "CONTEXT:"
-echo "  You have a deployment YAML file, a TLS certificate file, and"
-echo "  a TLS key file. You need to create a Kubernetes TLS secret"
-echo "  and mount it in the deployment."
-echo ""
-echo "TASK:"
-echo "  1. Create a TLS secret named 'app-tls' in namespace 'secure'"
 echo "     using the provided cert and key files"
 echo "  2. Edit the deployment at /root/secure-deploy.yaml to mount"
 echo "     the TLS secret as a volume at /etc/tls"
@@ -35,6 +28,14 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -subj "/CN=secure-app.example.com/O=CKS Practice" 2>/dev/null
 
 # Create deployment WITHOUT tls volume (student must add it)
+
+#!/bin/bash
+# ============================================================================
+# CKS REAL EXAM QUESTION 2: TLS Secret
+# ============================================================================
+
+set -e
+
 cat <<'EOF' > /root/secure-deploy.yaml
 apiVersion: apps/v1
 kind: Deployment

@@ -1,35 +1,23 @@
 #!/bin/bash
+
 # ============================================================================
-# CKS EXAM PRACTICE — Q16: Upgrade Worker Node
+# CKS EXAM REAL QUESTION — Q16: Upgrade Worker Node
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q16: UPGRADE WORKER NODE"
+echo "  CKS REAL Q16: UPGRADE WORKER NODE"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
-echo "  The cluster control plane has already been upgraded to v1.33.1."
-echo "  The worker node is still on v1.33.0 and needs to be upgraded."
+echo "  The control plane has already been upgraded to Kubernetes v1.33.1."
+echo "  The worker node is still running v1.33.0 and must be upgraded."
 echo ""
 echo "TASK:"
-echo "  Upgrade the worker node from Kubernetes v1.33.0 to v1.33.1:"
-echo ""
-echo "  1. Cordon the worker node (prevent new pods from being scheduled)"
-echo "  2. Drain the worker node (evict existing pods safely)"
-echo "  3. SSH to the worker node"
-echo "  4. Upgrade kubeadm to v1.33.1"
-echo "  5. Run 'kubeadm upgrade node'"
-echo "  6. Upgrade kubelet and kubectl to v1.33.1"
-echo "  7. Restart kubelet"
-echo "  8. Exit back to control-plane node"
-echo "  9. Uncordon the worker node"
-echo ""
-echo "IMPORTANT:"
-echo "  - Do NOT upgrade the control plane (already done)"
-echo "  - Only upgrade the worker node"
-echo "  - Ensure pods are rescheduled after uncordoning"
+echo "  - Upgrade the worker node from Kubernetes v1.33.0 to v1.33.1."
+echo "  - Do NOT upgrade the control plane."
+echo "  - Ensure pods are rescheduled after the upgrade."
 echo ""
 echo "=================================================================="
 echo "  Setting up environment (simulated)..."

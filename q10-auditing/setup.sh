@@ -1,37 +1,26 @@
 #!/bin/bash
+
 # ============================================================================
-# CKS EXAM PRACTICE — Q10: Auditing
+# CKS EXAM REAL QUESTION — Q10: Kubernetes Auditing
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q10: KUBERNETES AUDITING"
+echo "  CKS REAL Q10: KUBERNETES AUDITING"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
-echo "  You need to configure audit logging on the kube-apiserver."
+echo "  Audit logging is not currently enabled on the kube-apiserver."
 echo ""
 echo "TASK:"
-echo "  1. Create an audit policy file at /etc/kubernetes/audit/policy.yaml"
-echo "     with the following rules:"
-echo ""
-echo "     a. Log Secret resources at the Metadata level in all namespaces"
-echo "     b. Log Pod resources at the RequestResponse level in namespace 'prod'"
-echo "     c. Log everything else at the Request level"
-echo ""
-echo "  2. Configure the kube-apiserver to use this audit policy:"
-echo "     - --audit-policy-file=/etc/kubernetes/audit/policy.yaml"
-echo "     - --audit-log-path=/var/log/kubernetes/audit/audit.log"
-echo "     - --audit-log-maxage=30"
-echo "     - --audit-log-maxbackup=10"
-echo "     - --audit-log-maxsize=100"
-echo ""
-echo "  3. Mount the necessary volumes in the apiserver static pod"
-echo ""
-echo "IMPORTANT:"
-echo "  - Ensure the apiserver restarts successfully"
-echo "  - The audit log directory must exist"
+echo "  - Create an audit policy file at /etc/kubernetes/audit/policy.yaml with rules to:"
+echo "    * Log Secret resources at Metadata level in all namespaces."
+echo "    * Log Pod resources at RequestResponse level in namespace 'prod'."
+echo "    * Log all other requests at Request level."
+echo "  - Configure the kube-apiserver to use this audit policy and log to /var/log/kubernetes/audit/audit.log."
+echo "  - Mount the necessary volumes in the apiserver static pod manifest."
+echo "  - Ensure the apiserver restarts successfully and the audit log directory exists."
 echo ""
 echo "=================================================================="
 echo "  Setting up environment..."

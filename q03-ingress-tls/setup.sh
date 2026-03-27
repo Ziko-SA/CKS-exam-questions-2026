@@ -1,25 +1,23 @@
 #!/bin/bash
 # ============================================================================
-# CKS EXAM PRACTICE — Q03: Ingress with TLS
+# CKS REAL EXAM QUESTION 3: Ingress with TLS
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q03: INGRESS WITH TLS"
+echo "  CKS REAL Q03: INGRESS WITH TLS & SSL REDIRECT"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
-echo "  You have a running web application in the 'web' namespace."
-echo "  A TLS secret already exists."
+echo "  You have a running web application in the 'web' namespace. A TLS secret already exists."
 echo ""
 echo "TASK:"
-echo "  1. Create an Ingress resource named 'web-ingress' in namespace 'web'"
-echo "  2. The Ingress must use the existing TLS secret 'web-tls-secret'"
-echo "  3. The Ingress must use ingressClassName: nginx"
-echo "  4. The Ingress must redirect HTTP requests to HTTPS using the"
-echo "     annotation: nginx.ingress.kubernetes.io/ssl-redirect: \"true\""
-echo "  5. Route host 'app.example.com' to service 'web-svc' on port 80"
+echo "  1. Create an Ingress resource named 'web-ingress' in namespace 'web'."
+echo "  2. The Ingress must use the existing TLS secret 'web-tls-secret'."
+echo "  3. The Ingress must use ingressClassName: nginx."
+echo "  4. The Ingress must redirect HTTP requests to HTTPS using the annotation: nginx.ingress.kubernetes.io/ssl-redirect: \"true\"."
+echo "  5. Route host 'app.example.com' to service 'web-svc' on port 80."
 echo ""
 echo "REFERENCES (available in exam):"
 echo "  - https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/"

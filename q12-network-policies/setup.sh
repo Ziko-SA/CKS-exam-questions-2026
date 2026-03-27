@@ -1,33 +1,23 @@
 #!/bin/bash
+
 # ============================================================================
-# CKS EXAM PRACTICE — Q12: Network Policies
+# CKS EXAM REAL QUESTION — Q12: Network Policies
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q12: NETWORK POLICIES"
+echo "  CKS REAL Q12: NETWORK POLICIES"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
-echo "  There are several applications running in namespaces 'frontend',"
-echo "  'backend', and 'database'. You need to restrict network traffic."
+echo "  Applications are running in namespaces 'frontend', 'backend', and 'database'."
+echo "  Network access is currently unrestricted."
 echo ""
 echo "TASK:"
-echo "  Create 2 NetworkPolicy resources (standard Kubernetes, NOT"
-echo "  CiliumNetworkPolicy):"
-echo ""
-echo "  Policy 1 — 'deny-all-backend' in namespace 'backend':"
-echo "    - Default deny ALL ingress traffic to all pods in namespace 'backend'"
-echo ""
-echo "  Policy 2 — 'allow-backend-from-frontend' in namespace 'backend':"
-echo "    - Allow ingress traffic to pods labeled 'app=api-server'"
-echo "      ONLY from pods labeled 'app=web' in namespace 'frontend'"
-echo "    - Allow only port 8080/TCP"
-echo ""
-echo "IMPORTANT:"
-echo "  - Use standard Kubernetes NetworkPolicy (apiVersion: networking.k8s.io/v1)"
-echo "  - Do NOT use CiliumNetworkPolicy"
+echo "  - Create a NetworkPolicy in namespace 'backend' to deny all ingress traffic by default."
+echo "  - Create a second NetworkPolicy in namespace 'backend' to allow ingress to pods labeled 'app=api-server' only from pods labeled 'app=web' in namespace 'frontend' on port 8080/TCP."
+echo "  - Use standard Kubernetes NetworkPolicy (apiVersion: networking.k8s.io/v1), not CiliumNetworkPolicy."
 echo ""
 echo "=================================================================="
 echo "  Setting up environment..."

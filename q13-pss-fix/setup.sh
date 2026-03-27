@@ -1,29 +1,23 @@
 #!/bin/bash
+
 # ============================================================================
-# CKS EXAM PRACTICE — Q13: PSS (Pod Security Standards) — Fix Deployment
+# CKS EXAM REAL QUESTION — Q13: Pod Security Standards (PSS) Remediation
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q13: POD SECURITY STANDARDS — FIX DEPLOYMENT"
+echo "  CKS REAL Q13: POD SECURITY STANDARDS (PSS) REMEDIATION"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
-echo "  The namespace 'restricted' has Pod Security Standards (PSS)"
-echo "  enforcement enabled at the 'restricted' level. A deployment has"
-echo "  been created but pods are not starting due to PSS violations."
+echo "  The namespace 'restricted' has Pod Security Standards (PSS) enforcement enabled at the 'restricted' level."
+echo "  A deployment in this namespace is failing to start due to PSS violations."
 echo ""
 echo "TASK:"
-echo "  1. Check the ReplicaSet events to find the PSS violations"
-echo "  2. Fix the deployment YAML file at /root/pss-deploy.yaml to"
-echo "     comply with the 'restricted' PSS profile"
-echo "  3. Apply the fixed deployment and verify pods are running"
-echo ""
-echo "HINTS:"
-echo "  - kubectl get rs -n restricted"
-echo "  - kubectl describe rs <replicaset-name> -n restricted"
-echo "  - Check events for PSS violation messages"
+echo "  - Identify the PSS violations preventing pod startup."
+echo "  - Edit the deployment YAML at /root/pss-deploy.yaml to comply with the 'restricted' PSS profile."
+echo "  - Apply the fixed deployment and verify pods are running."
 echo ""
 echo "=================================================================="
 echo "  Setting up environment..."

@@ -1,26 +1,23 @@
 #!/bin/bash
+
 # ============================================================================
-# CKS EXAM PRACTICE — Q08: Projected Volume & ServiceAccount
+# CKS EXAM REAL QUESTION — Q08: ServiceAccount Token Projection
 # ============================================================================
 
 set -e
 
 echo "=================================================================="
-echo "  CKS PRACTICE Q08: PROJECTED VOLUME & SERVICEACCOUNT"
+echo "  CKS REAL Q08: SERVICEACCOUNT TOKEN PROJECTION"
 echo "=================================================================="
 echo ""
 echo "CONTEXT:"
 echo "  A ServiceAccount 'app-sa' and a deployment exist in namespace 'tokens'."
-echo "  The SA currently auto-mounts its token."
+echo "  The ServiceAccount currently auto-mounts its token."
 echo ""
 echo "TASK:"
-echo "  1. Edit the ServiceAccount 'app-sa' to set"
-echo "     automountServiceAccountToken: false"
-echo "  2. Edit the deployment 'token-app' to use a projected volume"
-echo "     to mount the token at:"
-echo "     /var/run/secrets/kubernetes.io/serviceaccount/token"
-echo "     with an expirationSeconds of 3600"
-echo "  3. Apply both changes"
+echo "  - Edit the ServiceAccount 'app-sa' to disable automountServiceAccountToken."
+echo "  - Edit the deployment 'token-app' to use a projected volume to mount the ServiceAccount token at /var/run/secrets/kubernetes.io/serviceaccount/token with an expirationSeconds of 3600."
+echo "  - Apply both changes."
 echo ""
 echo "=================================================================="
 echo "  Setting up environment..."

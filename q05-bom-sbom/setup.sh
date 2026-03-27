@@ -9,13 +9,6 @@ echo "=================================================================="
 echo "  CKS PRACTICE Q05: BOM/SBOM — SUPPLY CHAIN SECURITY"
 echo "=================================================================="
 echo ""
-echo "CONTEXT:"
-echo "  A deployment 'alpine-multi' runs in namespace 'apps'. It has 3"
-echo "  containers using different Alpine image versions."
-echo ""
-echo "TASK:"
-echo "  1. Check which container has the package 'libcrypto3' version"
-echo "     3.1.4-r5. You can exec into each container or use a tool."
 echo "  2. Edit the deployment YAML to REMOVE the container that has"
 echo "     the vulnerable libcrypto3 version, then redeploy."
 echo "  3. Generate an SPDX SBOM report for the image alpine:3.16.1"
@@ -35,6 +28,14 @@ metadata:
   namespace: apps
 spec:
   replicas: 1
+
+#!/bin/bash
+# ============================================================================
+# CKS REAL EXAM QUESTION 11: Generate SPDX Document (bom tool)
+# ============================================================================
+
+set -e
+
   selector:
     matchLabels:
       app: alpine-multi
