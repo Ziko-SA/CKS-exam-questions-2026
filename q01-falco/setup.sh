@@ -31,9 +31,18 @@ echo "=================================================================="
 # Create namespace
 kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
 
-# Create the 3 offending deployments
+
+# Create the 3 offending deployments and 1 safe deployment
 cat <<'EOF' | kubectl apply -f -
+---
 apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nvidia-app
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
     matchLabels:
       app: nvidia-app
   template:
@@ -56,14 +65,6 @@ metadata:
 spec:
   replicas: 1
   selector:
-
-#!/bin/bash
-# ============================================================================
-# CKS REAL EXAM QUESTION 1: Falco - Detect /dev/mem Access
-# ============================================================================
-
-set -e
-
     matchLabels:
       app: cpu-app
   template:

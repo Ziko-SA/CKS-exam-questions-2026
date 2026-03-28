@@ -28,14 +28,6 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -subj "/CN=secure-app.example.com/O=CKS Practice" 2>/dev/null
 
 # Create deployment WITHOUT tls volume (student must add it)
-
-#!/bin/bash
-# ============================================================================
-# CKS REAL EXAM QUESTION 2: TLS Secret
-# ============================================================================
-
-set -e
-
 cat <<'EOF' > /root/secure-deploy.yaml
 apiVersion: apps/v1
 kind: Deployment

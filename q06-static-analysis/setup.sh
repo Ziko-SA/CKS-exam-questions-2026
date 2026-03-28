@@ -51,14 +51,6 @@ COPY --chown=couchdb:couchdb ./opt/couchdb /opt/couchdb
 
 RUN find /opt/couchdb \! \( -user couchdb -group couchdb \) -exec chown -f couchdb:couchdb '{}' +
 
-
-#!/bin/bash
-# ============================================================================
-# CKS REAL EXAM QUESTION 3: Dockerfile Security Best Practices
-# ============================================================================
-
-set -e
-
 VOLUME /opt/couchdb/data
 
 EXPOSE 5984 4369 9100

@@ -28,14 +28,6 @@ metadata:
   namespace: apps
 spec:
   replicas: 1
-
-#!/bin/bash
-# ============================================================================
-# CKS REAL EXAM QUESTION 11: Generate SPDX Document (bom tool)
-# ============================================================================
-
-set -e
-
   selector:
     matchLabels:
       app: alpine-multi

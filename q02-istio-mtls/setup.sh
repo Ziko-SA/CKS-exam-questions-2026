@@ -34,6 +34,13 @@ kubectl create namespace webapp --dry-run=client -o yaml | kubectl apply -f -
 # Create the deployment
 cat <<'EOF' | kubectl apply -f -
 apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-frontend
+  namespace: webapp
+spec:
+  replicas: 1
+  selector:
     matchLabels:
       app: web-frontend
   template:
@@ -56,14 +63,6 @@ spec:
   selector:
     app: web-frontend
   ports:
-
-#!/bin/bash
-# ============================================================================
-# CKS REAL EXAM QUESTION 2: Istio mTLS & Sidecar Injection
-# ============================================================================
-
-set -e
-
   - port: 80
     targetPort: 80
 EOF
