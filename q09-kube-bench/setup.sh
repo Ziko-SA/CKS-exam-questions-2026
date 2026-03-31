@@ -47,6 +47,22 @@ for component in kube-apiserver kube-scheduler kube-controller-manager; do
   fi
 done
 
+# Ensure kube-bench is installed
+echo ""
+if command -v kube-bench &>/dev/null; then
+  echo "✅ kube-bench is available"
+  echo ""
+  echo "Running kube-bench to show current failures..."
+  echo "──────────────────────────────────────────────────"
+  kube-bench run --targets master --check 1.3.2,1.4.1 2>/dev/null | grep -E "\[PASS\]|\[FAIL\]|\[WARN\]" || echo "  (run manually: kube-bench run --targets master)"
+  echo "──────────────────────────────────────────────────"
+else
+  echo "⚠️  kube-bench is NOT installed."
+  echo "   Run 'bash install-prereqs.sh' from the project root to install it."
+  echo "   You can still fix the manifests manually, but won't be able to"
+  echo "   verify with kube-bench."
+fi
+
 echo ""
 echo "✅ Environment ready!"
 echo ""
@@ -58,4 +74,4 @@ echo "  - Use: kubectl get pods -n kube-system to monitor restart"
 echo ""
 echo "Backups saved at: /tmp/cks-q09/backups/"
 echo ""
-echo "Run 'bash solution.sh' when ready to see the answer."
+echo "Run 'bash verify.sh' after solving to check your answer."

@@ -67,42 +67,36 @@ spec:
     targetPort: 80
 EOF
 
-# Simulate Istio CRDs (for practice without real Istio)
+# Verify Istio is installed (install-prereqs.sh handles this)
 echo ""
-echo "NOTE: On KillerCoda, Istio may not be installed. This practice"
-echo "focuses on knowing the YAML definitions and kubectl commands."
-echo "The CRD files are provided for reference."
+if command -v istioctl &>/dev/null; then
+  echo "✅ Istio is installed: $(istioctl version --remote=false 2>/dev/null)"
+  # Verify Istio is running in the cluster
+  if kubectl get ns istio-system &>/dev/null; then
+    echo "✅ Istio control plane is running"
+    kubectl get pods -n istio-system --no-headers 2>/dev/null | head -5
+  else
+    echo "⚠️  Istio namespace not found — running 'istioctl install --set profile=demo -y'"
+    istioctl install --set profile=demo -y 2>/dev/null
+  fi
+else
+  echo "⚠️  Istio is NOT installed."
+  echo "   Run 'bash install-prereqs.sh' from the project root first."
+  echo "   Without Istio, you can still practice the YAML/commands"
+  echo "   but sidecar injection won't actually work."
+fi
+
+# Wait for deployment to be ready
 echo ""
+echo "Waiting for deployment..."
+kubectl wait --for=condition=available deployment/web-frontend -n webapp --timeout=60s 2>/dev/null || true
 
-# Create CRD simulation files
-mkdir -p /tmp/cks-q02
-
-cat <<'EOF' > /tmp/cks-q02/peer-authentication-reference.yaml
-# Reference: PeerAuthentication for STRICT mTLS
-# https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/
-apiVersion: security.istio.io/v1beta1
-kind: PeerAuthentication
-metadata:
-  name: default
-  namespace: <NAMESPACE>
-spec:
-  mtls:
-    mode: STRICT
-EOF
-
-cat <<'EOF' > /tmp/cks-q02/sidecar-reference.yaml
-# Reference: Sidecar injection
-# Label the namespace with: istio-injection=enabled
-# Then restart deployments to get sidecars injected
-EOF
-
+echo ""
 echo "✅ Environment ready!"
-echo ""
-echo "Reference files at: /tmp/cks-q02/"
 echo ""
 echo "HINTS:"
 echo "  - Namespace label for sidecar injection: istio-injection=enabled"
 echo "  - PeerAuthentication CRD for mTLS enforcement"
 echo "  - After labeling, restart the deployment to inject sidecars"
 echo ""
-echo "Run 'bash solution.sh' when ready to see the answer."
+echo "Run 'bash verify.sh' after solving to check your answer."

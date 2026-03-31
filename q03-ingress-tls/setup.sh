@@ -27,6 +27,19 @@ echo "=================================================================="
 echo "  Setting up environment..."
 echo "=================================================================="
 
+# Verify NGINX Ingress Controller is installed
+if kubectl get deploy -n ingress-nginx ingress-nginx-controller &>/dev/null 2>&1; then
+  echo "✅ NGINX Ingress Controller is running"
+else
+  echo "Installing NGINX Ingress Controller..."
+  kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/baremetal/deploy.yaml 2>/dev/null
+  echo "Waiting for Ingress Controller to be ready..."
+  kubectl wait --namespace ingress-nginx \
+    --for=condition=ready pod \
+    --selector=app.kubernetes.io/component=controller \
+    --timeout=180s 2>/dev/null || echo "⚠️  Controller may still be starting..."
+fi
+
 # Create namespace
 kubectl create namespace web --dry-run=client -o yaml | kubectl apply -f -
 
@@ -80,6 +93,10 @@ spec:
 EOF
 
 echo ""
+echo "Waiting for deployment..."
+kubectl wait --for=condition=available deployment/web-app -n web --timeout=60s 2>/dev/null || true
+
+echo ""
 echo "✅ Environment ready!"
 echo ""
 echo "Verify:"
@@ -90,4 +107,4 @@ echo "  - Use ingressClassName: nginx (NOT the annotation)"
 echo "  - TLS secret is 'web-tls-secret' in namespace 'web'"
 echo "  - Annotation for SSL redirect: nginx.ingress.kubernetes.io/ssl-redirect"
 echo ""
-echo "Run 'bash solution.sh' when ready to see the answer."
+echo "Run 'bash verify.sh' after solving to check your answer."

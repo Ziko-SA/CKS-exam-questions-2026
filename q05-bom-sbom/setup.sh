@@ -55,14 +55,24 @@ echo "Waiting for pods to be ready..."
 kubectl wait --for=condition=available deployment/alpine-multi -n apps --timeout=120s 2>/dev/null || true
 echo ""
 
+# Check if syft is installed for SBOM generation
+if command -v syft &>/dev/null; then
+  echo "✅ syft is installed for SBOM generation"
+else
+  echo "⚠️  syft not installed. Installing..."
+  curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin 2>/dev/null \
+    && echo "✅ syft installed" \
+    || echo "⚠️  syft install failed — run 'bash install-prereqs.sh' from project root"
+fi
+
+echo ""
 echo "✅ Environment ready!"
 echo ""
 echo "Deployment file: /tmp/alpine-multi-deploy.yaml"
 echo ""
 echo "HINTS:"
 echo "  - To check package versions: kubectl exec <pod> -n apps -c <container> -- apk list libcrypto3"
-echo "  - To generate SBOM: consider using 'bom' or 'syft' tool"
-echo "  - bom generate -i <image> -o <output-file>"
+echo "  - To generate SBOM: syft <image> -o spdx > /root/sbom-report.spdx"
 echo "  - Save SPDX output to /root/sbom-report.spdx"
 echo ""
-echo "Run 'bash solution.sh' when ready to see the answer."
+echo "Run 'bash verify.sh' after solving to check your answer."

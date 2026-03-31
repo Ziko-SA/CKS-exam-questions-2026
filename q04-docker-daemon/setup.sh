@@ -79,4 +79,4 @@ echo "✅ Environment ready!"
 set -e
 
 echo ""
-echo "Run 'bash solution.sh' when ready to see the answer."
+echo "Run 'bash verify.sh' after solving to check your answer."
