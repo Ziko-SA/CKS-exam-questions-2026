@@ -10,8 +10,6 @@
 #   bash install-prereqs.sh --skip-istio   # Skip Istio (heavy, ~3 min)
 # ============================================================================
 
-set -e
-
 SKIP_ISTIO=false
 for arg in "$@"; do
   case "$arg" in
@@ -24,9 +22,9 @@ SKIP=0
 FAIL=0
 
 log()  { echo -e "\n\033[1;34m>>> $1\033[0m"; }
-ok()   { echo "  ✅ $1"; ((PASS++)); }
-skip() { echo "  ⏭️  $1 (already installed)"; ((SKIP++)); }
-fail() { echo "  ❌ $1"; ((FAIL++)); }
+ok()   { echo "  ✅ $1"; PASS=$((PASS + 1)); }
+skip() { echo "  ⏭️  $1 (already installed)"; SKIP=$((SKIP + 1)); }
+fail() { echo "  ❌ $1"; FAIL=$((FAIL + 1)); }
 
 # ── Helm ───────────────────────────────────────────────────────────────────
 log "Helm"
@@ -102,7 +100,11 @@ else
   mkdir -p /etc/kube-bench
   cp -r /tmp/kube-bench-extract/cfg /etc/kube-bench/ 2>/dev/null || true
   rm -rf /tmp/kube-bench-extract /tmp/kube-bench.tar.gz
-  ok "kube-bench ${KBENCH_VER} installed" || fail "kube-bench install failed"
+  if [ -f /usr/local/bin/kube-bench ]; then
+    ok "kube-bench ${KBENCH_VER} installed"
+  else
+    fail "kube-bench install failed"
+  fi
 fi
 
 # ── syft (Q05 — SBOM) ────────────────────────────────────────────────────
@@ -197,7 +199,11 @@ WEBHOOK_EOF
 
   # Copy the CA cert for the admission config
   cp /etc/kubernetes/webhook-certs/webhook.crt /etc/kubernetes/admission/webhook-ca.crt 2>/dev/null || true
-  ok "Image Bouncer Webhook deployed" || fail "Webhook deployment failed"
+  if kubectl get deploy image-bouncer-webhook -n default &>/dev/null 2>&1; then
+    ok "Image Bouncer Webhook deployed"
+  else
+    fail "Webhook deployment failed"
+  fi
 fi
 
 # ── Verify cluster basics ────────────────────────────────────────────────
