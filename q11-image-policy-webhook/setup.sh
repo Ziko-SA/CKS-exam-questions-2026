@@ -23,26 +23,24 @@ echo "=================================================================="
 echo "  Setting up environment..."
 echo "=================================================================="
 
-# Ensure webhook server is deployed (install-prereqs.sh handles this)
-if kubectl get deploy image-bouncer-webhook -n default &>/dev/null 2>&1; then
-  echo "✅ Image Bouncer Webhook server is running"
-else
-  echo "Deploying Image Bouncer Webhook server..."
-  # Generate TLS certs for the webhook server
-  mkdir -p /etc/kubernetes/webhook-certs
-  openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /etc/kubernetes/webhook-certs/webhook.key \
-    -out /etc/kubernetes/webhook-certs/webhook.crt \
-    -subj "/CN=image-bouncer-webhook.default.svc" \
-    -addext "subjectAltName=DNS:image-bouncer-webhook.default.svc,DNS:image-bouncer-webhook.default.svc.cluster.local" \
-    2>/dev/null
+# Ensure webhook server and TLS materials are present (idempotent).
+echo "Ensuring Image Bouncer Webhook server and TLS configuration..."
 
-  kubectl create secret tls webhook-tls \
-    --cert=/etc/kubernetes/webhook-certs/webhook.crt \
-    --key=/etc/kubernetes/webhook-certs/webhook.key \
-    --dry-run=client -o yaml | kubectl apply -f -
+# Generate TLS certs for the webhook server
+mkdir -p /etc/kubernetes/webhook-certs
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout /etc/kubernetes/webhook-certs/webhook.key \
+  -out /etc/kubernetes/webhook-certs/webhook.crt \
+  -subj "/CN=image-bouncer-webhook.default.svc" \
+  -addext "subjectAltName=DNS:image-bouncer-webhook.default.svc,DNS:image-bouncer-webhook.default.svc.cluster.local" \
+  2>/dev/null
 
-  cat <<'WEBHOOK_EOF' | kubectl apply -f -
+kubectl create secret tls webhook-tls \
+  --cert=/etc/kubernetes/webhook-certs/webhook.crt \
+  --key=/etc/kubernetes/webhook-certs/webhook.key \
+  --dry-run=client -o yaml | kubectl apply -f -
+
+cat <<'WEBHOOK_EOF' | kubectl apply -f -
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -90,8 +88,15 @@ spec:
     targetPort: 1323
     protocol: TCP
 WEBHOOK_EOF
-  echo "Waiting for webhook server..."
-  kubectl wait --for=condition=available deployment/image-bouncer-webhook --timeout=60s 2>/dev/null || true
+
+echo "Waiting for webhook server..."
+kubectl wait --for=condition=available deployment/image-bouncer-webhook --timeout=120s 2>/dev/null || true
+
+WEBHOOK_ENDPOINTS=$(kubectl get endpoints image-bouncer-webhook -n default -o jsonpath='{.subsets[0].addresses[0].ip}' 2>/dev/null || true)
+if [ -n "$WEBHOOK_ENDPOINTS" ]; then
+  echo "✅ Image Bouncer Webhook endpoints are ready"
+else
+  echo "⚠️  Webhook service has no ready endpoints yet"
 fi
 
 mkdir -p /etc/kubernetes/admission
@@ -118,7 +123,7 @@ kind: Config
 clusters:
 - name: image-policy-webhook
   cluster:
-    server: https://image-bouncer-webhook.default.svc:1323/image_policy
+    server: ""
     certificate-authority: /etc/kubernetes/admission/webhook-ca.crt
 contexts:
 - name: image-policy-webhook
@@ -154,8 +159,10 @@ echo "  /etc/kubernetes/admission/webhook-kubeconfig.yaml"
 echo ""
 echo "ISSUES TO FIX:"
 echo "  1. admission-config.yaml has defaultAllow: true (should be false)"
-echo "  2. kube-apiserver needs ImagePolicyWebhook admission plugin enabled"
-echo "  3. kube-apiserver needs --admission-control-config-file flag"
-echo "  4. Volume mount needed for /etc/kubernetes/admission"
+echo "  2. webhook-kubeconfig.yaml has empty server value (set webhook URL)"
+echo "     Copy/paste this value: https://image-bouncer-webhook.default.svc:1323/image_policy"
+echo "  3. kube-apiserver needs ImagePolicyWebhook admission plugin enabled"
+echo "  4. kube-apiserver needs --admission-control-config-file flag"
+echo "  5. kube-apiserver needs BOTH volume mount and hostPath volume for /etc/kubernetes/admission"
 echo ""
 echo "Run 'bash verify.sh' after solving to check your answer."

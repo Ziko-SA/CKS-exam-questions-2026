@@ -129,6 +129,14 @@ fi
 
 # ── Image Bouncer Webhook (Q11) ──────────────────────────────────────────
 log "Image Policy Webhook Server (Q11 — ImagePolicyWebhook)"
+# Wait for API server to be reachable (may be recovering after Istio install)
+echo "  Waiting for API server to be ready..."
+for i in $(seq 1 30); do
+  kubectl get nodes &>/dev/null && break
+  echo "  API server not ready yet... retrying ($i/30)"
+  sleep 5
+done
+
 if kubectl get deploy image-bouncer-webhook -n default &>/dev/null 2>&1; then
   skip "image-bouncer-webhook deployment"
 else

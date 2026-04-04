@@ -17,8 +17,19 @@ echo "Fixed admission-config.yaml:"
 cat /etc/kubernetes/admission/admission-config.yaml
 echo ""
 
-echo "STEP 2: Verify webhook kubeconfig is correct"
+echo "STEP 2: Fix webhook kubeconfig server value"
 echo "--------"
+WEBHOOK_SERVER="https://image-bouncer-webhook.default.svc:1323/image_policy"
+if grep -Eq '^[[:space:]]*server:[[:space:]]*""[[:space:]]*$' /etc/kubernetes/admission/webhook-kubeconfig.yaml; then
+  sed -i "s#^[[:space:]]*server:[[:space:]]*\"\"[[:space:]]*$#    server: ${WEBHOOK_SERVER}#" /etc/kubernetes/admission/webhook-kubeconfig.yaml
+  echo "✅ Set webhook kubeconfig server to ${WEBHOOK_SERVER}"
+elif grep -Eq '^[[:space:]]*server:[[:space:]]*$' /etc/kubernetes/admission/webhook-kubeconfig.yaml; then
+  sed -i "s#^[[:space:]]*server:[[:space:]]*$#    server: ${WEBHOOK_SERVER}#" /etc/kubernetes/admission/webhook-kubeconfig.yaml
+  echo "✅ Set webhook kubeconfig server to ${WEBHOOK_SERVER}"
+else
+  echo "Webhook kubeconfig server already set"
+fi
+echo ""
 echo "webhook-kubeconfig.yaml:"
 cat /etc/kubernetes/admission/webhook-kubeconfig.yaml
 echo ""
@@ -49,13 +60,13 @@ if [ -f "$APISERVER" ]; then
   fi
 
   # Add volume mount for admission config
-  if ! grep -q "name: admission-config" "$APISERVER"; then
+  if ! grep -q "mountPath: /etc/kubernetes/admission" "$APISERVER"; then
     sed -i '/volumeMounts:/a\    - mountPath: /etc/kubernetes/admission\n      name: admission-config\n      readOnly: true' "$APISERVER"
     echo "✅ Added volumeMount for admission config"
   fi
 
   # Add volume for admission config
-  if ! grep -q "admission-config" "$APISERVER"; then
+  if ! grep -q "path: /etc/kubernetes/admission" "$APISERVER"; then
     sed -i '/volumes:/a\  - hostPath:\n      path: /etc/kubernetes/admission\n      type: DirectoryOrCreate\n    name: admission-config' "$APISERVER"
     echo "✅ Added hostPath volume for admission config"
   fi
